@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="log-app">c:/temp/logs/maqueta.log</Property>
+        <Property name="log-fw">c:/temp/maqueta-fw.log</Property>
+        <Property name="log-audit">c:/temp/logs/maqueta-audit.log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Consola" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%d{dd MMM yyyy HH:mm:ss,SSS} **** [model] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <RollingFile name="app" fileName="${log-app}"
+            filePattern="c:/temp/logs/maqueta-%d{yyyy-MM-dd}.%i.log">
+            <PatternLayout>
+                <pattern>%d %p %C{3.} %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <TimeBasedTriggeringPolicy interval="1" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="fw" fileName="${log-fw}"
+            filePattern="c:/temp/logs/maqueta-fw-%d{yyyy-MM-dd}.%i.log">
+            <PatternLayout>
+                <pattern>%d %p %C{3.} %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <TimeBasedTriggeringPolicy interval="1" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="audit" fileName="${log-audit}"
+            filePattern="c:/temp/logs/maqueta-audit-%d{yyyy-MM-dd}.%i.log">
+            <PatternLayout>
+                <pattern>%d;%m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <TimeBasedTriggeringPolicy interval="1" />
+            </Policies>
+        </RollingFile>
+<!--         <SMTP name="Mail"  -->
+<!--         	suppressExceptions="false"  -->
+<!--         	subject="${log4j2.mail.subject}"  -->
+<!--         	to="${log4j2.mail.to}"  -->
+<!--         	from="${log4j2.mail.from}" -->
+<!--           	smtpHost="${log4j2.mail.smtpHost}" -->
+<!--           	smtpPort="${log4j2.mail.smtpPort}"   -->
+<!--           	bufferSize="10">	 -->
+<!--           	<PatternLayout> -->
+<!-- 				<pattern>%d %-5p %c - %m%n</pattern> -->
+<!-- 			</PatternLayout> -->
+<!--     	</SMTP> -->
+    </Appenders>
+    <Loggers>
+        <Logger name="auditoria-log" level="info" additivity="false">
+            <AppenderRef ref="audit" />
+        </Logger>
+        <Logger name="org.apache" level="debug"
+            additivity="false">
+            <AppenderRef ref="fw" />
+        </Logger>
+        <Logger name="com.sun.faces" level="debug"
+            additivity="false">
+            <AppenderRef ref="fw" />
+        </Logger>
+        <Logger name="org.eclipse.persistence" level="debug"
+            additivity="false">
+            <AppenderRef ref="fw" />
+        </Logger>
+        <Logger name="edu.ub" level="debug"
+            additivity="false">
+            <AppenderRef ref="fw" />
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="app" />
+<!--             <AppenderRef ref="Consola" /> -->
+        </Root>
+    </Loggers>
+</Configuration>
